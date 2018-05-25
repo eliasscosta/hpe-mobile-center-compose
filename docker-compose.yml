@@ -1,0 +1,27 @@
+version: '3'
+services:
+  db:
+    image: postgres:9.6
+    environment:
+      - "POSTGRES_PASSWORD=YourPassword" # Change this
+    ports:
+     - "5432"
+    networks:
+     - hmc_net
+  hmc:
+    image: mobilelifecycle/mobilecenter:2.60
+    environment:
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=YourPassword
+      - FQDN=hmc
+    ports:
+     - "8080:8080"
+    links:
+     - db
+    networks:
+      - hmc_net
+networks:
+  hmc_net:
+    driver: bridge
